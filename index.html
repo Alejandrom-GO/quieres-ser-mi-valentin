@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Serás mi Valentín?</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+        body {
+            font-family: 'Pacifico', cursive;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            overflow: hidden;
+            transition: background-color 0.3s ease;
+            position: relative;
+        }
+        h1 {
+            color: #fff;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            font-size: 24px;
+            padding: 20px 25px;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: 0.3s;
+            font-weight: 900;
+            width: 100px;
+        }
+        .yes {
+            background-color: #1fc448;
+            color: white;
+        }
+        .yes:hover {
+            background-color: #22da50;
+        }
+        .no {
+            background-color: #dc3545;
+            color: white;
+            position: absolute;
+        }
+        .gallery {
+            width: 80%;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        .gallery img {
+            width: 250px;
+            height: 250px;
+            border-radius: 10px;
+            margin: 5px;
+            display: none;
+            transition: transform 0.3s;
+            object-fit: cover;
+        }
+        .gallery img.active {
+            display: block;
+        }
+        .gallery img:hover {
+            transform: scale(1.1);
+        }
+        .heart {
+            position: absolute;
+            font-size: 2rem;
+            color: red;
+            animation: floatUp 2s linear infinite;
+        }
+        @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="gallery">
+        <img src="assets/1.jpg" alt="Imagen 1" class="active">
+        <img src="assets/2.gif" alt="Imagen 2">
+        <img src="assets/3.jpg" alt="Imagen 3">
+        <img src="assets/4.jpg" alt="Imagen 4">
+        <img src="assets/5.jfif" alt="Imagen 5">
+        <img src="assets/6.jfif" alt="Imagen 6">
+        <img src="assets/7.jpg" alt="Imagen 7">
+        <img src="assets/8.jpg" alt="Imagen 8">
+    </div>
+    <h1>Xymena, ¿Quieres ser mi Valentín? ❤️</h1>
+    <div class="buttons">
+        <button class="yes" onclick="aceptar()">Sí</button>
+        <button class="no" onmouseover="mover(this)" ontouchstart="mover(this)" onclick="cambiarImagen()">No</button>
+    </div>
+
+    <script>
+        const frasesDivertidas = [
+            "No puedes huir del destino... y tu destino soy yo 😘",
+            "¿Por qué corres? Si el amor es más rápido 💘",
+            "Cuidado, el botón de 'No' está poseído por el amor 💕",
+            "No importa cuántas veces digas 'No', yo seguiré insistiendo 🥰",
+            "¡No digas que no! El amor es más fuerte que tu resistencia 💘",
+            "Ni el WiFi se cae tanto como este botón tratando de huir 😂",
+            "Dale que sí, no te hagas la difícil 😜",
+            "¡Que no panda el cúnico! Solo es amor eterno ❤️",
+            "¿Sabías que si dices 'No', un gatito llora? 🐱💔",
+            "Dicen que el botón de 'No' es solo una ilusión óptica 👀"
+        ];
+
+
+
+        let currentImageIndex = 0;
+        const fondoColores = ['#cccbfb', '#e3d3f3', '#e3d4eb', '#edddd8', '#fad4da', '#fbd3db', '#ddecf3', '#ade2da'];
+        let colorIndex = 0;
+
+        function cambiarFondo() {
+            document.body.style.backgroundColor = fondoColores[colorIndex];
+            colorIndex = (colorIndex + 1) % fondoColores.length;
+        }
+
+        window.onload = cambiarFondo;
+
+        function aceptar() {
+            // Cambiar imagen
+            const images = document.querySelectorAll('.gallery img');
+            images.forEach(img => img.style.display = 'none');
+            images[6].style.display = 'block';
+
+            // Ocultar el botón de "No"
+            document.querySelector('.no').style.display = 'none';
+
+            // Cambiar el fondo
+            document.body.style.backgroundColor = '#ddecf3';
+
+            // Animación de corazones
+            lanzarCorazones();
+
+            // Modificar el mensaje
+            setTimeout(() => {
+                document.querySelector('h1').textContent = '¡Sabía que dirías que sí, Preciosa! 💖';
+                document.querySelector('.yes').style.display = 'none';
+            }, 100);
+        }
+
+        function mostrarFrase() {
+            const h1 = document.querySelector("h1");
+            const fraseAleatoria = frasesDivertidas[Math.floor(Math.random() * frasesDivertidas.length)];
+            h1.textContent = fraseAleatoria;
+        }
+
+        function cambiarImagen() {
+            const images = document.querySelectorAll('.gallery img');
+            images[currentImageIndex].classList.remove('active');
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            images[currentImageIndex].classList.add('active');
+        }
+
+        function mover(button) {
+            let x = Math.random() * (window.innerWidth - button.clientWidth);
+            let y = Math.random() * (window.innerHeight - button.clientHeight);
+            button.style.left = `${x}px`;
+            button.style.top = `${y}px`;
+            cambiarImagen();
+            cambiarFondo();
+            mostrarFrase();
+        }
+
+        function lanzarCorazones() {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement("div");
+                    heart.classList.add("heart");
+                    heart.textContent = "❤️";
+                    heart.style.left = Math.random() * 100 + "vw";
+                    heart.style.top = Math.random() * 100 + "vh";
+                    heart.style.animationDuration = Math.random() * 2 + 1 + "s";
+
+                    document.body.appendChild(heart);
+
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 3000);
+                }, i * 100);
+            }
+        }
+    </script>
+</body>
+</html>
